@@ -6,7 +6,7 @@ import { hp, normalize, wp } from '@utils/responsive';
 import { useAuth } from 'context/AuthContext';
 import { useTheme } from 'context/ThemeContext';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity, Alert } from 'react-native';
 
 export const LoginScreen: React.FC = () => {
   const { theme } = useTheme();
@@ -45,19 +45,26 @@ export const LoginScreen: React.FC = () => {
     try {
       const payload={email: email,password:password}
       const resp = await axiosInstance.post("/api/auth/login", JSON.stringify(payload))
-      storageService.setItem("AUTH_TOKEN", resp.data)
-      // navigate('MainApp')
       
-      // // Mock user data
-      // const user = {
-      //   id: '1',
-      //   name: 'John Doe',
-      //   email: email,
-      // };
-      await login(resp.data);
-      
+      if (resp.data?.role === 3 && resp.data?.token) {
+        storageService.setItem("AUTH_TOKEN", resp.data?.token)
+        await login(resp.data?.token)
+      } else {
+        Alert.alert('Unauthorized', 'Admins cannot supposed to login here', [
+          {
+            text: 'OK',
+            onPress: () => navigate('Login'),
+          },
+        ]);
+      }      
     } catch (error) {
-      console.error('Login error:', error);
+        Alert.alert('Error', `${ error }`, [
+          {
+            text: 'OK',
+            onPress: () => navigate('Login'),
+          },
+        ]);
+        console.error('Login error:', error);
     } finally {
       setLoading(false);
     }
