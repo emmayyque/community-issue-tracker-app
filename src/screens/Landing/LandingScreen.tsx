@@ -2,11 +2,10 @@ import { Button, Spacer } from '@components/index';
 import { hp, normalize, wp } from '@utils/responsive';
 import { useTheme } from 'context/ThemeContext';
 import React from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ImageBackground, 
+import {
+  View,
+  Text,
+  StyleSheet,
   SafeAreaView,
   StatusBar,
   Dimensions,
@@ -23,54 +22,43 @@ export const LandingScreen: React.FC = () => {
   const { theme } = useTheme();
   const navigation = useNavigation<LandingScreenNavigationProp>();
 
-  const handleLogin = () => {
-    navigation.navigate('Login');
-  };
-
-  const handleSignup = () => {
-    navigation.navigate('Signup');
-  };
+  const handleLogin = () => navigation.navigate('Login');
+  const handleSignup = () => navigation.navigate('Signup');
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <StatusBar 
-        barStyle="light-content" 
-        backgroundColor="transparent" 
-        translucent 
-      />
-      
-      {/* Hero Section */}
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+
+      {/* Header / Hero Section */}
       <View style={[styles.heroSection, { backgroundColor: theme.colors.primary }]}>
         <View style={styles.heroContent}>
-          {/* Logo/Brand Area */}
+          {/* Logo */}
           <View style={styles.logoContainer}>
             <View style={[styles.logoIcon, { backgroundColor: theme.colors.background }]}>
-              <Text style={[styles.logoText, { color: theme.colors.primary }]}>
-                🔧
-              </Text>
+              <Text style={[styles.logoText, { color: theme.colors.primary }]}>🏙️</Text>
             </View>
             <Text style={[styles.brandName, { color: theme.colors.background }]}>
-              Mobile Mechanic
+              TownTweak
             </Text>
           </View>
 
-          {/* Main Headline */}
+          {/* Headline */}
           <View style={styles.headlineContainer}>
             <Text style={[styles.headline, { color: theme.colors.background }]}>
-              Your Car Repair
+              Report Problems.
             </Text>
             <Text style={[styles.headline, { color: theme.colors.background }]}>
-              <Text style={styles.highlightText}>At Your Doorstep</Text>
+              <Text style={styles.highlightText}>Get Them Fixed.</Text>
             </Text>
           </View>
 
           {/* Subtitle */}
           <Text style={[styles.subtitle, { color: theme.colors.background, opacity: 0.9 }]}>
-            Connect with professional mechanics for quick and reliable automotive services wherever you are
+            Connect directly with IESCO, WASA & Municipality — quick reporting and real updates.
           </Text>
         </View>
 
-        {/* Decorative Elements */}
+        {/* Decorative circles */}
         <View style={styles.decorativeElements}>
           <View style={[styles.circle, styles.circle1, { backgroundColor: theme.colors.background, opacity: 0.1 }]} />
           <View style={[styles.circle, styles.circle2, { backgroundColor: theme.colors.background, opacity: 0.05 }]} />
@@ -84,48 +72,42 @@ export const LandingScreen: React.FC = () => {
           <Text style={[styles.featuresTitle, { color: theme.colors.text }]}>
             Why Choose Us?
           </Text>
-          
+
           <View style={styles.featuresList}>
             <View style={styles.featureItem}>
               <Text style={[styles.featureIcon, { color: theme.colors.primary }]}>⚡</Text>
-              <View style={styles.featureTextContainer}>
-                <Text style={[styles.featureTitle, { color: theme.colors.text }]}>
-                  Fast Service
-                </Text>
-                <Text style={[styles.featureDesc, { color: theme.colors.textSecondary }]}>
-                  Quick response time
-                </Text>
-              </View>
+              <Text style={[styles.featureTitle, { color: theme.colors.text }]}>
+                Quick Report
+              </Text>
+              <Text style={[styles.featureDesc, { color: theme.colors.textSecondary }]}>
+                Instantly log community issues
+              </Text>
             </View>
 
             <View style={styles.featureItem}>
-              <Text style={[styles.featureIcon, { color: theme.colors.primary }]}>👨‍🔧</Text>
-              <View style={styles.featureTextContainer}>
-                <Text style={[styles.featureTitle, { color: theme.colors.text }]}>
-                  Expert Mechanics
-                </Text>
-                <Text style={[styles.featureDesc, { color: theme.colors.textSecondary }]}>
-                  Certified professionals
-                </Text>
-              </View>
+              <Text style={[styles.featureIcon, { color: theme.colors.primary }]}>🏛️</Text>
+              <Text style={[styles.featureTitle, { color: theme.colors.text }]}>
+                Official Departments
+              </Text>
+              <Text style={[styles.featureDesc, { color: theme.colors.textSecondary }]}>
+                Connected with IESCO, WASA, and more
+              </Text>
             </View>
 
             <View style={styles.featureItem}>
-              <Text style={[styles.featureIcon, { color: theme.colors.primary }]}>📍</Text>
-              <View style={styles.featureTextContainer}>
-                <Text style={[styles.featureTitle, { color: theme.colors.text }]}>
-                  On-Demand
-                </Text>
-                <Text style={[styles.featureDesc, { color: theme.colors.textSecondary }]}>
-                  Service at your location
-                </Text>
-              </View>
+              <Text style={[styles.featureIcon, { color: theme.colors.primary }]}>✅</Text>
+              <Text style={[styles.featureTitle, { color: theme.colors.text }]}>
+                Track Status
+              </Text>
+              <Text style={[styles.featureDesc, { color: theme.colors.textSecondary }]}>
+                Stay updated in real time
+              </Text>
             </View>
           </View>
         </View>
       </View>
 
-      {/* Action Buttons Section */}
+      {/* Action Buttons */}
       <View style={[styles.actionSection, { backgroundColor: theme.colors.background }]}>
         <View style={styles.actionContainer}>
           <Button
@@ -134,7 +116,6 @@ export const LandingScreen: React.FC = () => {
             variant="primary"
             size="large"
             fullWidth
-            // style={styles.primaryButton}
           />
           <Spacer size="xs" />
           <Button
@@ -143,9 +124,7 @@ export const LandingScreen: React.FC = () => {
             variant="outline"
             size="large"
             fullWidth
-            // style={styles.secondaryButton}
           />
-          
           <Text style={[styles.termsText, { color: theme.colors.textSecondary }]}>
             By continuing, you agree to our Terms of Service and Privacy Policy
           </Text>
@@ -156,11 +135,8 @@ export const LandingScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  
-  // Hero Section
+  container: { flex: 1 },
+
   heroSection: {
     flex: 0.55,
     position: 'relative',
@@ -175,7 +151,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: hp(4),
+    marginBottom: hp(3),
   },
   logoIcon: {
     width: wp(16),
@@ -183,22 +159,20 @@ const styles = StyleSheet.create({
     borderRadius: wp(8),
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: hp(2),
+    marginBottom: hp(1.5),
   },
-  logoText: {
-    fontSize: normalize(24),
-  },
+  logoText: { fontSize: normalize(26) },
   brandName: {
-    fontSize: normalize(20),
+    fontSize: normalize(22),
     fontWeight: '700',
     letterSpacing: 0.5,
   },
   headlineContainer: {
     alignItems: 'center',
-    marginBottom: hp(3),
+    marginBottom: hp(2),
   },
   headline: {
-    fontSize: normalize(32),
+    fontSize: normalize(30),
     fontWeight: '800',
     textAlign: 'center',
     lineHeight: normalize(38),
@@ -208,13 +182,11 @@ const styles = StyleSheet.create({
     textDecorationColor: 'rgba(255,255,255,0.8)',
   },
   subtitle: {
-    fontSize: normalize(16),
+    fontSize: normalize(15),
     textAlign: 'center',
-    lineHeight: normalize(24),
+    lineHeight: normalize(22),
     paddingHorizontal: wp(4),
   },
-  
-  // Decorative Elements
   decorativeElements: {
     position: 'absolute',
     top: 0,
@@ -245,8 +217,6 @@ const styles = StyleSheet.create({
     top: hp(15),
     left: -wp(8),
   },
-  
-  // Features Section
   featuresSection: {
     flex: 0.25,
     paddingTop: hp(3),
@@ -270,11 +240,8 @@ const styles = StyleSheet.create({
     width: wp(25),
   },
   featureIcon: {
-    fontSize: normalize(24),
+    fontSize: normalize(26),
     marginBottom: hp(1),
-  },
-  featureTextContainer: {
-    alignItems: 'center',
   },
   featureTitle: {
     fontSize: normalize(12),
@@ -286,8 +253,6 @@ const styles = StyleSheet.create({
     fontSize: normalize(10),
     textAlign: 'center',
   },
-  
-  // Action Section
   actionSection: {
     flex: 0.2,
     justifyContent: 'flex-end',
@@ -295,20 +260,6 @@ const styles = StyleSheet.create({
   },
   actionContainer: {
     paddingHorizontal: wp(6),
-  },
-  primaryButton: {
-    marginBottom: hp(2),
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  secondaryButton: {
-    marginBottom: hp(2),
   },
   termsText: {
     fontSize: normalize(11),
