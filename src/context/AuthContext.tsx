@@ -59,6 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         user,
         loading: false,
       });
+      loadAuthState()
     } catch (error) {
       console.error('Error saving user:', error);
       throw error;
