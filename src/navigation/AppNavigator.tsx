@@ -1,107 +1,8 @@
-// import React from 'react';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import { Loading } from 'components/index';
-// import { useAuth } from 'context/AuthContext';
-// import {
-//   HomeScreen,
-//   LandingScreen,
-//   LoginScreen,
-//   ProfileScreen,
-//   SignupScreen,
-// } from '@screens/index';
-// import { useTheme } from 'context/ThemeContext';
-
-// export type RootStackParamList = {
-//   Home: undefined;
-//   Profile: undefined;
-//   Login: undefined;
-//   Signup: undefined;
-//   Landing: undefined;
-// };
-
-// const Stack = createNativeStackNavigator<RootStackParamList>();
-
-// export const AppNavigator: React.FC = () => {
-//   const { isAuthenticated, loading } = useAuth();
-//   const { theme } = useTheme();
-
-//   if (loading) {
-//     return <Loading message="App loading..." />;
-//   }
-
-//   return (
-//     <NavigationContainer
-//       theme={{
-//         dark: false,
-//         colors: {
-//           primary: theme.colors.primary,
-//           background: theme.colors.background,
-//           card: theme.colors.surface,
-//           text: theme.colors.text,
-//           border: theme.colors.border,
-//           notification: theme.colors.primary,
-//         },
-//         fonts: theme.fonts as any,
-//       }}
-//     >
-//       <Stack.Navigator
-//         screenOptions={{
-//           headerStyle: {
-//             backgroundColor: theme.colors.surface,
-//           },
-//           headerTintColor: theme.colors.text,
-//           headerTitleStyle: {
-//             fontWeight: 'bold',
-//           },
-//         }}
-//       >
-//         {isAuthenticated ? (
-//           <>
-//             <Stack.Screen
-//               name="Home"
-//               component={HomeScreen}
-//               options={{ title: 'Mobile Mechanic' }}
-//             />
-//             <Stack.Screen
-//               name="Profile"
-//               component={ProfileScreen}
-//               options={{ title: 'Profile' }}
-//             />
-//           </>
-//         ) : (
-//           <>
-//             <Stack.Screen
-//               name="Landing"
-//               component={LandingScreen}
-//               options={{ headerShown: false }}
-//             />
-//             <Stack.Screen
-//               name="Login"
-//               component={LoginScreen}
-//               options={{ headerShown: false }}
-//             />
-//             <Stack.Screen
-//               name="Signup"
-//               component={SignupScreen}
-//               options={{ headerShown: false }}
-//             />
-//           </>
-//         )}
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// };
-
-
-
-// navigation/AppNavigator.tsx
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { Loading } from 'components/index';
 import { useAuth } from 'context/AuthContext';
 import { useTheme } from 'context/ThemeContext';
@@ -112,18 +13,11 @@ import {
   HomeScreen, 
   ChatScreen, 
   ProfileScreen,
-  AboutScreen,
-  ContactScreen,
   ReportIssueScreen,
   ReportDetailsScreen,
   MyReportsScreen,
-  EditReportScreen,
-  ChatDetailScreen
+  EditReportScreen
 } from '@screens/index';
-import { CustomDrawerContent } from './CustomDrawerContent';
-// import { CustomDrawerContent } from './CustomDrawerContent';
-// import { AboutScreen } from '@screens/About/AboutScreen';
-// import { ContactScreen } from '@screens/Contact/ContactScreen';
 
 // Navigation Types
 export type RootStackParamList = {
@@ -152,7 +46,6 @@ export type DrawerParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();
-const Drawer = createDrawerNavigator<DrawerParamList>();
 
 // Bottom Tab Navigator
 const BottomTabNavigator = () => {
@@ -213,72 +106,6 @@ const BottomTabNavigator = () => {
   );
 };
 
-// Drawer Navigator
-const DrawerNavigator = () => {
-  const { theme } = useTheme();
-
-  return (
-    <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: theme.colors.surface,
-          elevation: 0,
-          shadowOpacity: 0,
-        },
-        headerTintColor: theme.colors.text,
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 18,
-        },
-        drawerStyle: {
-          backgroundColor: theme.colors.surface,
-          width: 280,
-        },
-        drawerActiveTintColor: theme.colors.primary,
-        drawerInactiveTintColor: theme.colors.textSecondary,
-        drawerLabelStyle: {
-          fontSize: 16,
-          fontWeight: '500',
-          marginLeft: -16,
-        },
-      }}
-    >
-      {/* <Drawer.Screen 
-        name="HomeTab" 
-        component={BottomTabNavigator}
-        options={{ 
-          title: 'Mobile Mechanic',
-          drawerLabel: 'Home',
-          drawerIcon: ({ color, size }) => (
-            <Text style={{ fontSize: size, color }}>🏠</Text>
-          ),
-        }}
-      /> */}
-      <Drawer.Screen 
-        name="About" 
-        component={AboutScreen}
-        options={{ 
-          title: 'About Us',
-          drawerIcon: ({ color, size }) => (
-            <Text style={{ fontSize: size, color }}>ℹ️</Text>
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name="Contact" 
-        component={ContactScreen}
-        options={{ 
-          title: 'Contact Us',
-          drawerIcon: ({ color, size }) => (
-            <Text style={{ fontSize: size, color }}>📞</Text>
-          ),
-        }}
-      />
-    </Drawer.Navigator>
-  );
-};
-
 // Main App Navigator
 export const AppNavigator: React.FC = () => {
   const { isAuthenticated, loading } = useAuth();
@@ -317,7 +144,6 @@ export const AppNavigator: React.FC = () => {
           <Stack.Screen name="MyReportsScreen" component={MyReportsScreen} />
           <Stack.Screen name="ReportDetailsScreen" component={ReportDetailsScreen} />
           <Stack.Screen name="EditReportScreen" component={EditReportScreen} />
-          <Stack.Screen name="ChatDetailScreen" component={ChatDetailScreen} />
           </>
         )}
       </Stack.Navigator>

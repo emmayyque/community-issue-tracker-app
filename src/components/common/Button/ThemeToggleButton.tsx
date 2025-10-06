@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, Animated, Text } from 'react-native';
-import { Icon } from '../Icon/Icon';
 import { useTheme } from 'context/ThemeContext';
 import { normalize, wp } from '@utils/responsive';
 import { isIOS } from '@utils/helpers';

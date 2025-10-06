@@ -2,7 +2,6 @@ import { Button, Icon, Input } from '@components/index';
 import { useNavigation } from '@react-navigation/native';
 import axiosInstance from '@services/axiosInstance';
 import { hp, normalize, wp } from '@utils/responsive';
-import { useAuth } from 'context/AuthContext';
 import { useTheme } from 'context/ThemeContext';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
@@ -10,7 +9,6 @@ import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Ale
 export const SignupScreen: React.FC = () => {
   const navigation = useNavigation()
   const { theme } = useTheme();
-  const { signup } = useAuth();
   
   const [formData, setFormData] = useState({
     name: '',

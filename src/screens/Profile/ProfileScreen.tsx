@@ -4,9 +4,6 @@ import { useAuth } from 'context/AuthContext';
 import { useTheme } from 'context/ThemeContext';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Switch } from 'react-native';
-// import { useTheme, useAuth } from '@context';
-// import { Button, Input } from '@components';
-// import { wp, hp, normalize } from '@utils/responsive';
 
 export const ProfileScreen: React.FC = () => {
   const { theme, isDarkMode, toggleTheme } = useTheme();

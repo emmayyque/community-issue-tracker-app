@@ -31,7 +31,6 @@ export const ReportIssueScreen: React.FC = () => {
   const route = useRoute();
   const { category } = route.params as RouteParams;
   const { theme } = useTheme();
-  const { user } = useAuth();
 
   const [formData, setFormData] = useState({
     title: '',

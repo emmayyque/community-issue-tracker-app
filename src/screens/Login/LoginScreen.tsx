@@ -1,4 +1,4 @@
-import { Button, Icon, Input } from '@components/index';
+import { Button, Input } from '@components/index';
 import { useNavigation } from '@react-navigation/native';
 import axiosInstance from '@services/axiosInstance';
 import { storageService } from '@services/storage/storageService';

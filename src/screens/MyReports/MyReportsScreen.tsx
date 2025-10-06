@@ -15,7 +15,6 @@ import { useAuth } from 'context/AuthContext';
 import { Button } from '@components/index';
 import { hp, normalize, wp } from '@utils/responsive';
 import axiosInstance from '@services/axiosInstance';
-import { storageService } from '@services/storage/storageService';
 
 interface StatusUpdates {
   statusType: 'Pending' | 'Forwarded' | 'In-Progress' | 'Resolved';
@@ -44,71 +43,11 @@ interface Report {
 export const MyReportsScreen: React.FC = () => {
   const navigation = useNavigation();
   const { theme } = useTheme();
-  const { user } = useAuth();
 
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<'All' | 'Pending' | 'In Progress' | 'Resolved' | 'Rejected'>('All');
-
-  // Mock data - Replace with API call
-  // const mockReports: Report[] = [
-  //   {
-  //     id: '1',
-  //     title: 'Water supply disruption in Block A',
-  //     description: 'No water supply for the last 3 days in our area',
-  //     category: 'WASA',
-  //     subcategory: 'Water Supply',
-  //     priority: 'High',
-  //     status: 'In Progress',
-  //     createdAt: '2024-01-15T10:30:00Z',
-  //     updatedAt: '2024-01-17T14:20:00Z',
-  //     completedPercentage: 60,
-  //     canEdit: false,
-  //     assignedTo: 'Water Department Team A',
-  //     estimatedCompletion: '2024-01-20T12:00:00Z',
-  //   },
-  //   {
-  //     id: '2',
-  //     title: 'Street light not working',
-  //     description: 'Main road street lights have been off for a week',
-  //     category: 'Municipality',
-  //     subcategory: 'Street Lights',
-  //     priority: 'Medium',
-  //     status: 'Pending',
-  //     createdAt: '2024-01-18T09:15:00Z',
-  //     updatedAt: '2024-01-18T09:15:00Z',
-  //     completedPercentage: 0,
-  //     canEdit: true,
-  //   },
-  //   {
-  //     id: '3',
-  //     title: 'Power outage issue',
-  //     description: 'Frequent power cuts in our locality',
-  //     category: 'IESCO',
-  //     subcategory: 'Power Outage',
-  //     priority: 'High',
-  //     status: 'Resolved',
-  //     createdAt: '2024-01-10T16:45:00Z',
-  //     updatedAt: '2024-01-16T11:30:00Z',
-  //     completedPercentage: 100,
-  //     canEdit: false,
-  //     assignedTo: 'IESCO Maintenance Team',
-  //   },
-  //   {
-  //     id: '4',
-  //     title: 'Garbage collection delay',
-  //     description: 'Garbage not collected for 4 days',
-  //     category: 'Municipality',
-  //     subcategory: 'Garbage Collection',
-  //     priority: 'Low',
-  //     status: 'Rejected',
-  //     createdAt: '2024-01-12T08:00:00Z',
-  //     updatedAt: '2024-01-14T10:00:00Z',
-  //     completedPercentage: 0,
-  //     canEdit: false,
-  //   },
-  // ];
 
   const fetchReports = async () => {
     try {

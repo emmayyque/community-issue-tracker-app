@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   Alert,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -48,31 +47,8 @@ export const ReportDetailsScreen: React.FC = () => {
   const [ statusUpdates, setStatusUpdates ] = useState<StatusUpdates[]>([])
   const [ loading, setLoading ] = useState(true)
 
-  // Mock status updates - Replace with API call
-  // const [statusUpdates] = useState<StatusUpdate[]>([
-  //   {
-  //     id: '1',
-  //     message: 'Report submitted successfully',
-  //     timestamp: report.createdAt,
-  //     updatedBy: 'System',
-  //   },
-  //   {
-  //     id: '2',
-  //     message: 'Report assigned to maintenance team',
-  //     timestamp: '2024-01-16T09:00:00Z',
-  //     updatedBy: 'Admin',
-  //   },
-  //   {
-  //     id: '3',
-  //     message: 'Work in progress - Team dispatched to location',
-  //     timestamp: '2024-01-17T10:30:00Z',
-  //     updatedBy: 'Field Supervisor',
-  //   },
-  // ]);
-  
   const fetchUpdates = async () => {
     try {
-      // Replace with actual API call
       const response = await axiosInstance.get(`/api/report/getOne/${ report._id }`);
 
       response.data.status[0].createdAt = response.data.createdAt
@@ -270,7 +246,7 @@ export const ReportDetailsScreen: React.FC = () => {
                   <View style={[
                     styles.timelineDot,
                     { 
-                      backgroundColor: index === 0 ? theme.colors.primary : theme.colors.border
+                      backgroundColor: index === statusUpdates.length - 1 ? theme.colors.primary : theme.colors.border
                     }
                   ]} />
                   {index !== statusUpdates.length - 1 && (

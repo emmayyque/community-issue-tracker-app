@@ -7,14 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import axiosInstance from '@services/axiosInstance';
 import { getRelativeTime } from '@utils/helpers';
 
-interface ChatItem {
-  id: string;
-  mechanicName: string;
-  lastMessage: string;
-  timestamp: string;
-  unread: boolean;
-}
-
 interface NoticeItem {
   _id: string;
   title: string;
@@ -23,30 +15,6 @@ interface NoticeItem {
   updatedAt: string;
 }
 
-// const mockChats: ChatItem[] = [
-//   {
-//     id: '1',
-//     mechanicName: 'Ahmed Khan',
-//     lastMessage: 'Your car service is completed!',
-//     timestamp: '2m ago',
-//     unread: true,
-//   },
-//   {
-//     id: '2',
-//     mechanicName: 'Ali Mechanic',
-//     lastMessage: 'I will arrive in 15 minutes',
-//     timestamp: '1h ago',
-//     unread: false,
-//   },
-//   {
-//     id: '3',
-//     mechanicName: 'Hassan Auto',
-//     lastMessage: 'Thank you for your service',
-//     timestamp: '2d ago',
-//     unread: false,
-//   },
-// ];
-
 export const ChatScreen: React.FC = () => {
   const { theme } = useTheme();
   const navigation : any = useNavigation()
@@ -54,13 +22,11 @@ export const ChatScreen: React.FC = () => {
   const [ notices, setNotices ] = useState<NoticeItem[]>([])
 
   useEffect(() => {
-    console.log("Hey first")
     fetchNotices()
   }, [])
 
   const fetchNotices = async () => {
     try {
-      // Replace with actual API call
       const response = await axiosInstance.get('/api/notice/getAllActive');
       setNotices(response.data)
 
@@ -70,52 +36,6 @@ export const ChatScreen: React.FC = () => {
       setLoading(false);
     }
   }
-
-  const renderChatItem = ({ item }: { item: ChatItem }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          console.log('item?.mechanicName', item?.mechanicName);
-          navigation.navigate('ChatDetailScreen', {
-            mechanicName: item?.mechanicName,
-            mechanicId: item?.id
-          });
-        } }
-        style={[styles.chatItem, { backgroundColor: theme.colors.surface }]}
-      >
-        <View style={[styles.avatar, { backgroundColor: theme.colors.primary }]}>
-          <Text style={[styles.avatarText, { color: theme.colors.background }]}>
-            {item.mechanicName.charAt(0)}
-          </Text>
-        </View>
-
-        <View style={styles.chatContent}>
-          <View style={styles.chatHeader}>
-            <Text style={[styles.mechanicName, { color: theme.colors.text }]}>
-              {item.mechanicName}
-            </Text>
-            <Text style={[styles.timestamp, { color: theme.colors.textSecondary }]}>
-              {item.timestamp}
-            </Text>
-          </View>
-
-          <Text
-            style={[
-              styles.lastMessage,
-              { color: item.unread ? theme.colors.text : theme.colors.textSecondary }
-            ]}
-            numberOfLines={1}
-          >
-            {item.lastMessage}
-          </Text>
-        </View>
-
-        {item.unread && (
-          <View style={[styles.unreadIndicator, { backgroundColor: theme.colors.primary }]} />
-        )}
-      </TouchableOpacity>
-    );
-  };
 
   const renderNoticeItem = ({ item }: { item: NoticeItem }) => {
     return (

@@ -1,7 +1,5 @@
 import React from 'react';
 import { View, ActivityIndicator, Text, StyleSheet } from 'react-native';
-// import { useTheme } from '@context/ThemeContext';
-// import { wp, hp, normalize } from '@utils/responsive';
 import { hp, normalize } from '@utils/responsive';
 import { useTheme } from 'context/ThemeContext';
 

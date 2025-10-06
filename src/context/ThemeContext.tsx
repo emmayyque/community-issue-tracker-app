@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { lightTheme, darkTheme } from '@styles/themes';
 import { Theme } from 'types/index';
-// import { Theme } from '@types';
 
 interface ThemeContextType {
   theme: Theme;
