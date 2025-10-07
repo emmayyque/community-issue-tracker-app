@@ -20,6 +20,11 @@ interface StatusUpdates {
   updatedAt: string;
 }
 
+interface AssignedTo {
+  _id: string;
+  name: string;
+}
+
 interface RouteParams {
   report: {
     _id: string;
@@ -34,7 +39,7 @@ interface RouteParams {
     updatedAt: string;
     completedPercentage: number;
     canEdit: boolean;
-    assignedTo?: string;
+    assignedTo?: AssignedTo;
     estimatedCompletion?: string;
   };
 }
@@ -212,27 +217,29 @@ export const ReportDetailsScreen: React.FC = () => {
       </View>
 
       {/* Assignment & Timeline */}
-      {(report.assignedTo || report.estimatedCompletion) && (
-        <View style={[styles.section, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Assignment Details</Text>
-          
-          {report.assignedTo && (
-            <View style={styles.infoRow}>
-              <Text style={[styles.infoLabel, { color: theme.colors.textSecondary }]}>Assigned To:</Text>
-              <Text style={[styles.infoValue, { color: theme.colors.text }]}>{report.assignedTo}</Text>
-            </View>
-          )}
-          
-          {report.estimatedCompletion && (
-            <View style={styles.infoRow}>
-              <Text style={[styles.infoLabel, { color: theme.colors.textSecondary }]}>Est. Completion:</Text>
-              <Text style={[styles.infoValue, { color: theme.colors.text }]}>
-                {formatDate(report.estimatedCompletion)}
-              </Text>
-            </View>
-          )}
-        </View>
-      )}
+      {
+        (report.assignedTo || report.estimatedCompletion) && (
+          <View style={[styles.section, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Assignment Details</Text>
+            
+            {report.assignedTo && (
+              <View style={styles.infoRow}>
+                <Text style={[styles.infoLabel, { color: theme.colors.textSecondary }]}>Assigned To:</Text>
+                <Text style={[styles.infoValue, { color: theme.colors.text }]}>{report.assignedTo.name}</Text>
+              </View>
+            )}
+            
+            {report.estimatedCompletion && (
+              <View style={styles.infoRow}>
+                <Text style={[styles.infoLabel, { color: theme.colors.textSecondary }]}>Est. Completion:</Text>
+                <Text style={[styles.infoValue, { color: theme.colors.text }]}>
+                  {formatDate(report.estimatedCompletion)}
+                </Text>
+              </View>
+            )}
+          </View>
+        )
+      }
 
       {/* Status Updates */}
       {
@@ -296,7 +303,7 @@ export const ReportDetailsScreen: React.FC = () => {
           />
         )}
         
-        {report.currentStatus === 'Pending' && (
+        {report.currentStatus === "Pending" && !report.assignedTo && (
           <Button
             title="Delete Report"
             onPress={handleDelete}

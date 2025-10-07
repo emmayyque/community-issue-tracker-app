@@ -23,6 +23,11 @@ interface StatusUpdates {
   updatedAt: string;
 }
 
+interface AssignedTo {
+  _id: string;
+  name: string;
+}
+
 interface Report {
   _id: string;
   title: string;
@@ -36,7 +41,7 @@ interface Report {
   updatedAt: string;
   completedPercentage: number;
   canEdit: boolean;
-  assignedTo?: string;
+  assignedTo?: AssignedTo;
   estimatedCompletion?: string;
 }
 
@@ -270,7 +275,7 @@ export const MyReportsScreen: React.FC = () => {
               {/* Assigned To (if available) */}
               {report.assignedTo && (
                 <Text style={[styles.assignedTo, { color: theme.colors.textSecondary }]}>
-                  Assigned to: {report.assignedTo}
+                  Assigned to: {report.assignedTo.name}
                 </Text>
               )}
 
@@ -290,7 +295,7 @@ export const MyReportsScreen: React.FC = () => {
                   </Text>
                 </View>
                 
-                {report.currentStatus == "Pending" && (
+                {report.currentStatus == "Pending" && !report.assignedTo && (
                   <TouchableOpacity
                     style={[styles.editButton, { borderColor: theme.colors.primary }]}
                     onPress={() => handleEditReport(report)}
