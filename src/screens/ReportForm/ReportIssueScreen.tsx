@@ -12,10 +12,12 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTheme } from 'context/ThemeContext';
-import { useAuth } from 'context/AuthContext';
 import { Button } from '@components/index';
 import { hp, normalize, wp } from '@utils/responsive';
 import axiosInstance from '@services/axiosInstance';
+import { GoogleGenAI } from '@google/genai'
+
+const ai = new GoogleGenAI({ apiKey: 'AIzaSyB0mi5fwVu-SjzNGXj5CwuBLwaEh2aGZZ4' })
 
 interface RouteParams {
   category: {
@@ -24,6 +26,22 @@ interface RouteParams {
     icon: string;
     description: string;
   };
+}
+
+const RESPONSE_SCHEMA = {
+  type: "object",
+  properties: {
+    predicted_priority: {
+      type: "string",
+      description: "The final classification of the report's severity level.",
+      enum: ["Low", "Medium", "High", "Critical"] 
+    },
+    analysis_summary: {
+      type: "string",
+      description: "A brief, 1-2 sentence explanation of why this priority was chosen (e.g., intense negative sentiment, keywords like 'crash' and 'data loss')."
+    }
+  },
+  required: ["predicted_priority", "analysis_summary"]
 }
 
 export const ReportIssueScreen: React.FC = () => {
@@ -37,7 +55,7 @@ export const ReportIssueScreen: React.FC = () => {
     description: '',
     category: category.name,
     subCategory: '',
-    priority: 'Medium',
+    priority: '',
   });
   const [errors, setErrors] = useState<any>({});
   const [loading, setLoading] = useState(false);
@@ -82,7 +100,7 @@ export const ReportIssueScreen: React.FC = () => {
     }
   };
 
-  const priorities = ['Low', 'Medium', 'High', 'Critical'];
+  // const priorities = ['Low', 'Medium', 'High', 'Critical'];
 
   const validateForm = () => {
     const newErrors: any = {};
@@ -107,15 +125,60 @@ export const ReportIssueScreen: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const getPriority = async (data: { title: any; description: any; }) => {
+    const REPORT_TITLE = data.title
+    const REPORT_DESCRIPTION = data.description
+    const SYSTEM_INSTRUCTION = `Analyze the following user report written in Roman Urdu. Classify its severity level (Priority) into one of the following categories: Low, Medium, High, or Critical. Base your classification entirely on the sentiment, urgency, and intensity expressed in the title and description.`
+
+    try {
+      const resp = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: [
+          {
+            role: "user",
+            parts: [{
+              text: SYSTEM_INSTRUCTION + "\n\nReport Title: " + REPORT_TITLE + "\nReport Description: " + REPORT_DESCRIPTION
+            }]
+          }
+        ],
+        config: {
+          responseMimeType: "application/json",
+          responseJsonSchema: RESPONSE_SCHEMA,
+          temperature: 0.1,  // Low temperature for deterministic classification
+        }
+      })
+      
+      const maybeString: string | undefined = resp.text
+      if (maybeString) {
+        const jsonResult = JSON.parse(maybeString)
+        return jsonResult.predicted_priority
+      } else {
+        console.error("Error: Response text is missing or undefined.");
+        return null
+      }
+
+    } catch (err) {
+      Alert.alert('Error', 'Failed to predict priority. Please try again.' + err);
+      return null
+    } 
+  }
+
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
     setLoading(true);
+    const priority = await getPriority({ title: formData.title, description: formData.description })
+    if (!priority) {
+      setLoading(false)
+      return;
+    }
+
     try {
+      
       // Here you would normally send the data to your API
       const response = await axiosInstance.post(
         '/api/report/add',
-        JSON.stringify(formData),
+        JSON.stringify({ ...formData, priority: priority }),
       );
 
       Alert.alert('Success', 'Your issue has been reported successfully!', [
@@ -248,7 +311,7 @@ export const ReportIssueScreen: React.FC = () => {
           </View>
 
           {/* Priority */}
-          <View style={styles.inputGroup}>
+          {/* <View style={styles.inputGroup}>
             <Text style={[styles.label, { color: theme.colors.text }]}>
               Priority
             </Text>
@@ -287,7 +350,7 @@ export const ReportIssueScreen: React.FC = () => {
                 </TouchableOpacity>
               ))}
             </View>
-          </View>
+          </View> */}
 
           {/* Description */}
           <View style={styles.inputGroup}>
